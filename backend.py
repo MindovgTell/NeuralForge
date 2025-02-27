@@ -50,3 +50,22 @@ class Tensor:
 
         return output
     
+    def backward(self):
+        # For correct implementation of backpropagation through graph
+        # were intorduce topological sort for elements in our childrens graph
+
+        graph = []
+        visited = set()
+        def build_topology(v):
+            if v not in visited:
+                visited.add(v)
+                for child in v._prev:
+                    build_topology(child)
+                graph.append(v)
+        build_topology(self)
+
+        self.grad = 1
+        for v in reversed(graph):
+            v._backward
+        
+        
